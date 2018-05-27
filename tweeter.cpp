@@ -12,23 +12,22 @@ int main(int argc, char ** argv) {
 
   try {
     csvstream tweets(argv[1]);
-    map<string, string> row;
+
     vector<string> strip = {"\"", "“", "”", ")", "(", ",", ".", "?"};
-    map<string, string> replace;
-    replace["&lt;"] = "<";
-    replace["&gt;"] = ">";
+    map<string, string> replace = {{"&lt;", "<"}, {"&gt;", ">"}, {"&amp;", "&"}};
     Markov corpus(strip, replace);
+
+    map<string, string> row;
     tweets >> row;
 
     while(tweets >> row) {
-      string text = row["text"];
       corpus.train(row["text"]);
     }
 
     // corpus.report();
     cout << corpus.generate() << endl;
 
-  } catch (csvstream_exception e) {
+  } catch (const csvstream_exception &e) {
     std::cout << e.msg << std::endl;
   }
 }

@@ -21,10 +21,8 @@ public:
 
   Markov() {};
 
-  Markov(std::vector<string> remove,
-         std::map<string, string> replace):
-    chars_to_remove(remove),
-    chars_to_replace(replace) {};
+  Markov(std::vector<string> &remove, std::map<string, string> &replace):
+    chars_to_remove(remove), chars_to_replace(replace) {};
 
   void train(string in) {
     std::stringstream sin(in);
@@ -35,7 +33,6 @@ public:
       sanitize(word);
 
       if (word != "") {
-
         vocab.insert(word);
 
         chain_vocab[last_word].push_back(word);
@@ -67,7 +64,6 @@ public:
     for (auto word:vocab) {
       std::cout << word << "  ";
     }
-
     std::cout << std::endl;
 
     for (auto pair:chain_vocab) {
